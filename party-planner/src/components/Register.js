@@ -15,12 +15,13 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/register', formData);
-      console.log(response.data.message);
-      navigate('/login'); // Redirecționează către pagina de login după înregistrare
+      console.log("Registration response:", response.data); // Debug: check response
+      navigate('/login'); // Redirect to login on success
     } catch (error) {
-      console.error(error.response?.data?.message || "A apărut o eroare.");
+      console.error("Registration error:", error.response?.data?.message || error.message);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>
