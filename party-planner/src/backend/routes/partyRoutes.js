@@ -1,6 +1,6 @@
 // backend/routes/partyRoutes.js
 const express = require('express');
-const Party = require('../models/Party');
+const Party = require('../models/Party.js');
 const router = express.Router();
 
 // Ruta pentru a obține toate petrecerile
@@ -74,6 +74,19 @@ router.post('/:id/responsibilities', async (req, res) => {
     }
   });
   
+  router.delete('/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deletedParty = await Party.findByIdAndDelete(id);
+      if (!deletedParty) {
+        return res.status(404).json({ message: 'Evenimentul nu a fost găsit' });
+      }
+      res.status(200).json({ message: 'Evenimentul a fost șters cu succes' });
+    } catch (error) {
+      res.status(500).json({ message: 'Eroare la ștergerea evenimentului' });
+    }
+  });
+
 
 
 module.exports = router;

@@ -1,11 +1,10 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const navigate = useNavigate(); // Hook pentru redirecționare
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,12 +14,16 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-      localStorage.setItem('token', response.data.token); // Salvează token-ul în localStorage
-      navigate('/'); // Redirecționează către pagina principală
+      const { token, user } = response.data;
+      console.log("Răspuns de la server la login:", response.data); // Debug
+      localStorage.setItem('token', token);
+      localStorage.setItem('userName', user.name); // Salvează numele utilizatorului
+      navigate('/');
     } catch (error) {
-      console.error(error.response.data.message);
+      console.error("Email sau parolă incorectă.", error);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>

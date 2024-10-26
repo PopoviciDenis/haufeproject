@@ -1,11 +1,11 @@
 // src/components/Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
-  const navigate = useNavigate(); // Hook pentru redirecționare
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,19 +16,21 @@ const Register = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/register', formData);
       console.log(response.data.message);
-      navigate('/login'); // Redirecționează către pagina de login
+      navigate('/login'); // Redirecționează către pagina de login după înregistrare
     } catch (error) {
-      console.error(error.response.data.message);
+      console.error(error.response?.data?.message || "A apărut o eroare.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Înregistrare</h2>
-      <input type="text" name="username" placeholder="Nume utilizator" onChange={handleChange} required />
+      <input type="text" name="firstName" placeholder="Nume" onChange={handleChange} required />
+      <input type="text" name="lastName" placeholder="Prenume" onChange={handleChange} required />
       <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
       <input type="password" name="password" placeholder="Parolă" onChange={handleChange} required />
       <button type="submit">Înregistrează-te</button>
+      <p>Ai deja un cont? <Link to="/login">Autentifică-te aici</Link></p> {/* Link către login */}
     </form>
   );
 };
