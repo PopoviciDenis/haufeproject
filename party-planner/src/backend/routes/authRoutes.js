@@ -34,5 +34,15 @@ router.post('/login', async (req, res) => {
   console.log("JWT Secret:", process.env.JWT_SECRET); // Debug pentru a verifica că JWT_SECRET este disponibil
 
 });
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.find({}, 'firstName lastName');
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 module.exports = router;
